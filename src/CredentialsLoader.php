@@ -17,6 +17,8 @@
 
 namespace Google\Auth;
 
+
+use Google\Auth\Credentials\ExternalAccountCredentials;
 use Google\Auth\Credentials\ImpersonatedServiceAccountCredentials;
 use Google\Auth\Credentials\InsecureCredentials;
 use Google\Auth\Credentials\ServiceAccountCredentials;
@@ -32,6 +34,8 @@ abstract class CredentialsLoader implements
     FetchAuthTokenInterface,
     UpdateMetadataInterface
 {
+    use UpdateMetadataTrait;
+
     const TOKEN_CREDENTIAL_URI = 'https://oauth2.googleapis.com/token';
     const ENV_VAR = 'GOOGLE_APPLICATION_CREDENTIALS';
     const WELL_KNOWN_PATH = 'gcloud/application_default_credentials.json';
@@ -145,6 +149,11 @@ abstract class CredentialsLoader implements
         if ($jsonKey['type'] == 'impersonated_service_account') {
             $anyScope = $scope ?: $defaultScope;
             return new ImpersonatedServiceAccountCredentials($anyScope, $jsonKey);
+        }
+
+        if ($jsonKey['type'] == 'external_account') {
+            $anyScope = $scope ?: $defaultScope;
+            return new ExternalAccountCredentials($anyScope, $jsonKey);
         }
 
         throw new \InvalidArgumentException('invalid value in the type field');
