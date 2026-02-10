@@ -1,0 +1,15 @@
+name: Centralized CI Actions
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  centralized-ci:
+    uses: ticketplatform-ca/github-action-workflows/.github/workflows/centralized-ci.yml@master
+    permissions:
+      id-token: write
+      contents: read
+    secrets: inherit
