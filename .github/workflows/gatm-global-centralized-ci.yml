@@ -6,6 +6,10 @@ on:
     branches:
       - master
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   centralized-ci:
     uses: ticketplatform-ca/github-action-workflows/.github/workflows/centralized-ci.yml@master
